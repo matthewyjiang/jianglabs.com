@@ -44,7 +44,7 @@ export function EmptyState({ error }: EmptyStateProps) {
               color: "var(--ink)",
             }}
           >
-            Service list unavailable
+            Could not load your services
           </h2>
           <p
             style={{
@@ -126,7 +126,7 @@ export function EmptyState({ error }: EmptyStateProps) {
               color: "var(--ink)",
             }}
           >
-            No services assigned yet
+            Nothing here yet
           </h2>
           <p
             style={{
@@ -135,8 +135,8 @@ export function EmptyState({ error }: EmptyStateProps) {
               lineHeight: 1.6,
             }}
           >
-            Your account has not been added to any groups yet. Ask the admin to
-            add you to the right group and your services will appear here.
+            Your account does not have access yet. Ask an admin to add you,
+            then refresh this page.
           </p>
         </>
       )}

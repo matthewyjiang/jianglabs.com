@@ -1,26 +1,26 @@
 # ─── Stage 1: dependencies ────────────────────────────────────────────────────
-FROM node:22-alpine AS deps
+FROM oven/bun:1.3.14-alpine AS deps
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json bun.lock ./
 
-RUN npm ci --omit=dev
+RUN bun install --frozen-lockfile --production
 
 
 # ─── Stage 2: build ───────────────────────────────────────────────────────────
-FROM node:22-alpine AS builder
+FROM oven/bun:1.3.14-alpine AS builder
 
 WORKDIR /app
 
 # Copy all deps (including devDeps needed by the build)
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 COPY . .
 
 # next.config.ts sets output: "standalone"
-RUN npm run build
+RUN bun run build
 
 
 # ─── Stage 3: runner ──────────────────────────────────────────────────────────

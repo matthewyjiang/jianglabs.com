@@ -19,21 +19,20 @@ export default async function LandingPage() {
         <main className="landing-main">
           {/* Wordmark */}
           <header className="landing-wordmark">
-            <span className="wordmark-text">Jiang Labs</span>
+            <span className="wordmark-text">JiangLabs</span>
           </header>
 
           {/* Hero */}
           <section className="hero" aria-labelledby="hero-heading">
             <h1 id="hero-heading" className="hero-heading">
-              Your private
+              Your home cloud,
               <br />
-              <span className="hero-accent">home cloud.</span>
+              <span className="hero-accent">all in one place.</span>
             </h1>
 
             <p className="hero-body">
-              A personal portal for the Jiang Labs server. Sign in to reach
-              your services — media, photos, music, AI, and more — all in one
-              place.
+              JiangLabs brings your media, photos, music, AI tools, and more
+              into one calm front door.
             </p>
 
             <div className="hero-cta">
@@ -41,14 +40,14 @@ export default async function LandingPage() {
             </div>
 
             <p className="hero-note">
-              Access is private and based on account permissions.
+              Private access. What you see depends on your account.
             </p>
           </section>
         </main>
 
         {/* Footer */}
         <footer className="landing-footer">
-          <p>Jiang Labs</p>
+          <p>JiangLabs</p>
         </footer>
       </div>
 

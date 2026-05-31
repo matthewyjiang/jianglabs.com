@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Jiang Labs",
-  description: "Your private home portal. Sign in to access your services.",
+  title: "JiangLabs",
+  description: "Private home portal for JiangLabs. Sign in to open your services.",
   robots: { index: false, follow: false },
 };
 

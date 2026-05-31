@@ -12,13 +12,7 @@ services:
       - .env
     networks:
       - web
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
-
+      - proxy
   # ── Optional: run Caddy in the same compose stack ─────────────────────────
   # Uncomment and adjust if you want Caddy managed here.
   # If Caddy already runs on the host, skip this and point it at 'portal:3000'
@@ -46,6 +40,8 @@ networks:
     external: true   # created by: docker network create web
     # If using a fresh stack with the caddy service above, change to:
     # external: false
+  proxy:
+    external: true
 
 # volumes:
 #   caddy_data:

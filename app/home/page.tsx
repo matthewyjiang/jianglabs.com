@@ -42,8 +42,8 @@ export default async function DashboardPage() {
       <div className="dash-root">
         {/* ── Top bar ──────────────────────────────────────────── */}
         <header className="topbar" role="banner">
-          <Link href="/" className="topbar-wordmark" aria-label="Jiang Labs home">
-            Jiang Labs
+          <Link href="/" className="topbar-wordmark" aria-label="JiangLabs home">
+            JiangLabs
           </Link>
 
           <AccountMenu
@@ -59,11 +59,11 @@ export default async function DashboardPage() {
           {/* Greeting */}
           <div className="dash-greeting animate-fade-up">
             <h1 className="greeting-heading">
-              Hello, {firstName}.
+              Welcome back, {firstName}.
             </h1>
             {appsByRoom.length > 0 && (
               <p className="greeting-sub">
-                {visibleApps.length} service{visibleApps.length !== 1 ? "s" : ""} available to you.
+                {visibleApps.length} service{visibleApps.length !== 1 ? "s" : ""} ready for you.
               </p>
             )}
           </div>
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
 
         {/* ── Footer ───────────────────────────────────────────── */}
         <footer className="dash-footer">
-          <p>Jiang Labs</p>
+          <p>JiangLabs</p>
         </footer>
       </div>
 

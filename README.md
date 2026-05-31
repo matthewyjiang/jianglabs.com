@@ -1,12 +1,13 @@
-# Jiang Labs Portal
+# JiangLabs Portal
 
 A private home portal for `jianglabs.com`. Users sign in through Authentik and see the services they are permitted to access, organized by purpose.
 
 ## Stack
 
-- **Next.js 15** (App Router, standalone output)
+- **Next.js 16** (App Router, standalone output)
 - **Auth.js v5** (NextAuth beta) with a custom Authentik OIDC provider
 - **TypeScript**, **Tailwind CSS**
+- **Bun** for local package management and scripts
 - Deployed behind **Caddy** as a reverse proxy
 - Containerized with **Docker**
 
@@ -50,11 +51,19 @@ jianglabs.com/
 ```bash
 cp .env.example .env.local
 # Fill in AUTH_SECRET, AUTHENTIK_*, etc.
-npm install
-npm run dev
+bun install
+bun dev
 ```
 
 The site runs at `http://localhost:3000`.
+
+Useful commands:
+
+```bash
+bun run lint
+bun run build
+bun start
+```
 
 ---
 
@@ -65,9 +74,10 @@ Copy `.env.example` to `.env` (production) or `.env.local` (dev) and fill in all
 | Variable | Required | Description |
 |---|---|---|
 | `AUTH_SECRET` | Yes | Random secret for cookie encryption. Generate: `openssl rand -base64 32` |
-| `AUTH_URL` | Yes | Public URL of the portal: `https://jianglabs.com` |
+| `AUTH_URL` | Yes | Public Auth.js base path. For default routing use `https://jianglabs.com/api/auth` |
+| `AUTH_TRUST_HOST` | Yes, behind proxy | Set `true` behind Caddy/nginx/Traefik/Cloudflare so Auth.js trusts forwarded host/proto headers |
 | `AUTHENTIK_URL` | Yes | Base URL of your Authentik instance: `https://auth.jianglabs.com` |
-| `AUTHENTIK_ISSUER` | Yes | OIDC issuer: `https://auth.jianglabs.com/application/o/<slug>` |
+| `AUTHENTIK_ISSUER` | Yes | OIDC issuer: `https://auth.jianglabs.com/application/o/<slug>/` — must exactly match Authentik discovery metadata, including trailing slash |
 | `AUTHENTIK_CLIENT_ID` | Yes | OAuth2 client ID from Authentik provider settings |
 | `AUTHENTIK_CLIENT_SECRET` | Yes | OAuth2 client secret — never commit this |
 | `AUTHENTIK_APPLICATION_SLUG` | No | Application slug for deep-links (default: `jianglabs-portal`) |
@@ -83,12 +93,14 @@ In Authentik: **Applications > Providers > Create > OAuth2/OpenID Provider**.
 
 | Field | Value |
 |---|---|
-| Name | `Jiang Labs Portal` |
+| Name | `JiangLabs Portal` |
 | Client type | Confidential |
 | Client ID | (copy to `AUTHENTIK_CLIENT_ID`) |
 | Client secret | (copy to `AUTHENTIK_CLIENT_SECRET`) |
 | Redirect URI | `https://jianglabs.com/api/auth/callback/authentik` |
 | Signing key | Select any (or create one) |
+
+Also set `AUTH_TRUST_HOST=true` in deployment env when running behind a reverse proxy.
 
 **Scopes** — select all of these scope mappings on the provider:
 
@@ -104,18 +116,18 @@ In Authentik: **Applications > Providers > Create > OAuth2/OpenID Provider**.
 
 | Field | Value |
 |---|---|
-| Name | `Jiang Labs Portal` |
+| Name | `JiangLabs Portal` |
 | Slug | `jianglabs-portal` (or your chosen slug — must match `AUTHENTIK_ISSUER` and `AUTHENTIK_APPLICATION_SLUG`) |
 | Provider | the provider you just created |
 | Launch URL | `https://jianglabs.com` |
 
 ### 3. Set the issuer env var
 
-The issuer format is: `https://<authentik-host>/application/o/<slug>`
+The issuer format is: `https://<authentik-host>/application/o/<slug>/`
 
-Example: `AUTHENTIK_ISSUER=https://auth.jianglabs.com/application/o/jianglabs-portal`
+Example: `AUTHENTIK_ISSUER=https://auth.jianglabs.com/application/o/jianglabs-portal/`
 
-**Do not include a trailing slash.**
+**Include trailing slash.** Auth.js compares this against Authentik discovery metadata exactly; mismatch triggers `Configuration` error during sign-in.
 
 ### 4. Access policies
 

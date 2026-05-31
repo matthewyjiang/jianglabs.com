@@ -32,6 +32,7 @@ declare module "@auth/core/jwt" {
 }
 
 const config: NextAuthConfig = {
+  trustHost: true,
   providers: [
     Authentik({
       clientId: process.env.AUTHENTIK_CLIENT_ID!,
