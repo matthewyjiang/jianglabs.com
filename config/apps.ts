@@ -94,7 +94,7 @@ export const APPS: AppDefinition[] = [
   },
   {
     id: "openwebui",
-    authentikSlug: "openwebui",
+    authentikSlug: "open-web-ui",
     name: "Open WebUI",
     description: "Chat with local AI models, privately on your own server.",
     url: "https://webui.jianglabs.com",
@@ -103,7 +103,7 @@ export const APPS: AppDefinition[] = [
   },
   {
     id: "hermes",
-    authentikSlug: "hermes",
+    authentikSlug: "hermes-web-ui",
     name: "Hermes",
     description: "AI-powered messaging and workflow assistant.",
     url: "https://hermes.jianglabs.com",
