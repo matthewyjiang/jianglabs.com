@@ -1,10 +1,10 @@
-# Redirect www to apex (permanent)
-www.jianglabs.com {
-    redir https://jianglabs.com{uri} permanent
-}
+# Apex + www in one block — avoids ambiguity with other site definitions.
+# www requests are redirected to the apex; all others are proxied to the portal.
+jianglabs.com, www.jianglabs.com {
+    # Redirect www to apex
+    @www host www.jianglabs.com
+    redir @www https://jianglabs.com{uri} permanent
 
-# Main portal
-jianglabs.com {
     # Reverse proxy to the Docker container.
     # Replace 'portal:3000' with the actual hostname/port if Caddy runs on the host.
     reverse_proxy portal:3000
