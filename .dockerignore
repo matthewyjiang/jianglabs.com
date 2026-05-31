@@ -1,0 +1,17 @@
+.git
+.gitignore
+.agents
+skills-lock.json
+AGENTS.md
+CLAUDE.md
+node_modules
+.next
+coverage
+*.md
+!README.md
+.env
+.env.local
+.env.*.local
+Dockerfile
+docker-compose.yml
+Caddyfile

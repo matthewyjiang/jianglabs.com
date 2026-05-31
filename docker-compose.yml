@@ -1,0 +1,52 @@
+name: jianglabs-portal
+
+services:
+  portal:
+    build: .
+    image: jianglabs-portal:latest
+    container_name: jianglabs-portal
+    restart: unless-stopped
+    expose:
+      - "3000"
+    env_file:
+      - .env
+    networks:
+      - web
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ── Optional: run Caddy in the same compose stack ─────────────────────────
+  # Uncomment and adjust if you want Caddy managed here.
+  # If Caddy already runs on the host, skip this and point it at 'portal:3000'
+  # using the host network or a shared Docker network.
+  #
+  # caddy:
+  #   image: caddy:2-alpine
+  #   container_name: caddy
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "443:443/udp"
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy_data:/data
+  #     - caddy_config:/config
+  #   networks:
+  #     - web
+  #   depends_on:
+  #     - portal
+
+networks:
+  web:
+    external: true   # created by: docker network create web
+    # If using a fresh stack with the caddy service above, change to:
+    # external: false
+
+# volumes:
+#   caddy_data:
+#   caddy_config:

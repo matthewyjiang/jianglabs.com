@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+/* ─── OKLCH Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background layers */
+  --bg:               oklch(0.12 0.018 280);
+  --surface:          oklch(0.17 0.016 280);
+  --surface-raised:   oklch(0.21 0.015 280);
+  --border:           oklch(0.26 0.014 280);
+
+  /* Text */
+  --ink:              oklch(0.94 0.005 280);
+  --ink-muted:        oklch(0.62 0.010 280);
+  --ink-faint:        oklch(0.40 0.010 280);
+
+  /* Brand */
+  --primary:          oklch(0.62 0.19 285);
+  --primary-hover:    oklch(0.68 0.18 285);
+  --primary-muted:    oklch(0.62 0.08 285 / 0.15);
+  --accent:           oklch(0.80 0.10 55);
+  --accent-muted:     oklch(0.80 0.06 55 / 0.12);
+
+  /* Semantic */
+  --error:            oklch(0.65 0.20 25);
+  --success:          oklch(0.70 0.16 145);
+
+  /* Room tints (very subtle background overlays) */
+  --tint-watch:       oklch(0.55 0.18 285 / 0.06);
+  --tint-listen:      oklch(0.70 0.16 145 / 0.06);
+  --tint-photos:      oklch(0.65 0.16 55  / 0.06);
+  --tint-ai:          oklch(0.60 0.18 200 / 0.06);
+  --tint-network:     oklch(0.60 0.15 240 / 0.06);
+  --tint-develop:     oklch(0.65 0.12 180 / 0.06);
+
+  /* Z-index scale */
+  --z-sticky:   10;
+  --z-dropdown: 20;
+  --z-backdrop: 30;
+  --z-modal:    40;
+  --z-toast:    50;
+  --z-tooltip:  60;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Reset & Base ────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+  max-width: 65ch;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Focus styles ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Scrollbar (webkit) ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Utility classes ────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.animate-fade-up {
+  animation: fade-up 200ms ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 200ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }

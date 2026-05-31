@@ -1,65 +1,171 @@
-import Image from "next/image";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { SignInButton } from "@/components/SignInButton";
 
-export default function Home() {
+export default async function LandingPage() {
+  const session = await auth();
+
+  // Authenticated users go straight to the dashboard
+  if (session?.user) {
+    redirect("/home");
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <div className="landing-root">
+        {/* Aurora glow — decorative, behind the hero text only */}
+        <div className="aurora" aria-hidden="true" />
+
+        <main className="landing-main">
+          {/* Wordmark */}
+          <header className="landing-wordmark">
+            <span className="wordmark-text">Jiang Labs</span>
+          </header>
+
+          {/* Hero */}
+          <section className="hero" aria-labelledby="hero-heading">
+            <h1 id="hero-heading" className="hero-heading">
+              Your private
+              <br />
+              <span className="hero-accent">home cloud.</span>
+            </h1>
+
+            <p className="hero-body">
+              A personal portal for the Jiang Labs server. Sign in to reach
+              your services — media, photos, music, AI, and more — all in one
+              place.
+            </p>
+
+            <div className="hero-cta">
+              <SignInButton />
+            </div>
+
+            <p className="hero-note">
+              Access is private and based on account permissions.
+            </p>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <footer className="landing-footer">
+          <p>Jiang Labs</p>
+        </footer>
+      </div>
+
+      <style>{`
+        .landing-root {
+          min-height: 100dvh;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* Aurora glow */
+        .aurora {
+          position: absolute;
+          top: -20%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(900px, 120vw);
+          height: min(700px, 80vh);
+          border-radius: 50%;
+          background: radial-gradient(
+            ellipse at center,
+            oklch(0.62 0.19 285 / 0.12) 0%,
+            oklch(0.80 0.10 55  / 0.06) 40%,
+            transparent 70%
+          );
+          pointer-events: none;
+          z-index: 0;
+          filter: blur(60px);
+        }
+
+        .landing-main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 48px 24px 64px;
+          position: relative;
+          z-index: 1;
+          gap: 48px;
+        }
+
+        .landing-wordmark {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .wordmark-text {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: var(--ink-muted);
+          letter-spacing: -0.01em;
+        }
+
+        .hero {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 20px;
+          max-width: 600px;
+          animation: fade-up 300ms ease-out both;
+        }
+
+        .hero-heading {
+          font-size: clamp(2rem, 5vw, 3.5rem);
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          line-height: 1.15;
+          color: var(--ink);
+          text-wrap: balance;
+        }
+
+        .hero-accent {
+          color: var(--primary);
+        }
+
+        .hero-body {
+          font-size: 1.0625rem;
+          color: var(--ink-muted);
+          line-height: 1.65;
+          max-width: 52ch;
+          text-align: center;
+          text-wrap: pretty;
+        }
+
+        .hero-cta {
+          margin-top: 8px;
+          animation: fade-up 300ms ease-out 80ms both;
+        }
+
+        .hero-note {
+          font-size: 0.8125rem;
+          color: var(--ink-faint);
+          text-align: center;
+          max-width: none;
+        }
+
+        .landing-footer {
+          text-align: center;
+          padding: 24px;
+          font-size: 0.75rem;
+          color: var(--ink-faint);
+          position: relative;
+          z-index: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero,
+          .hero-cta {
+            animation: none;
+          }
+        }
+      `}</style>
+    </>
   );
 }
