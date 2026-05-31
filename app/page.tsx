@@ -13,36 +13,39 @@ export default async function LandingPage() {
   return (
     <>
       <div className="landing-root">
-        {/* Aurora glow — decorative, behind the hero text only */}
-        <div className="aurora" aria-hidden="true" />
+        {/* Animated mesh gradient background */}
+        <div className="mesh" aria-hidden="true">
+          <div className="mesh__blob mesh__blob--1" />
+          <div className="mesh__blob mesh__blob--2" />
+          <div className="mesh__blob mesh__blob--3" />
+        </div>
 
         <main className="landing-main">
-          {/* Wordmark */}
-          <header className="landing-wordmark">
-            <span className="wordmark-text">JiangLabs</span>
-          </header>
+          {/* Brand identity */}
+          <div className="landing-brand animate-fade-up">
+            <div className="monogram" aria-hidden="true">
+              <span>J</span>
+            </div>
+            <h1 className="brand-name">JiangLabs</h1>
+          </div>
 
-          {/* Hero */}
-          <section className="hero" aria-labelledby="hero-heading">
-            <h1 id="hero-heading" className="hero-heading">
-              Your home cloud,
-              <br />
-              <span className="hero-accent">all in one place.</span>
-            </h1>
-
-            <p className="hero-body">
-              JiangLabs brings your media, photos, music, AI tools, and more
-              into one calm front door.
+          {/* Hero content */}
+          <div
+            className="landing-hero animate-fade-up"
+            style={{ animationDelay: "100ms" }}
+          >
+            <p className="tagline">
+              Your home cloud, all in one place.
             </p>
 
-            <div className="hero-cta">
+            <div className="landing-cta">
               <SignInButton />
             </div>
 
-            <p className="hero-note">
+            <p className="privacy-note">
               Private access. What you see depends on your account.
             </p>
-          </section>
+          </div>
         </main>
 
         {/* Footer */}
@@ -58,28 +61,55 @@ export default async function LandingPage() {
           flex-direction: column;
           position: relative;
           overflow: hidden;
+          background: oklch(0.07 0.015 280);
         }
 
-        /* Aurora glow */
-        .aurora {
-          position: absolute;
-          top: -20%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: min(900px, 120vw);
-          height: min(700px, 80vh);
-          border-radius: 50%;
-          background: radial-gradient(
-            ellipse at center,
-            oklch(0.62 0.19 285 / 0.12) 0%,
-            oklch(0.80 0.10 55  / 0.06) 40%,
-            transparent 70%
-          );
-          pointer-events: none;
+        /* ── Mesh gradient background ── */
+        .mesh {
+          position: fixed;
+          inset: 0;
           z-index: 0;
-          filter: blur(60px);
+          overflow: hidden;
+          pointer-events: none;
         }
 
+        .mesh__blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(120px);
+        }
+
+        .mesh__blob--1 {
+          width: min(600px, 80vw);
+          height: min(600px, 80vw);
+          background: oklch(0.40 0.18 285);
+          top: -15%;
+          left: -10%;
+          opacity: 0.18;
+          animation: mesh-drift-1 25s infinite alternate ease-in-out;
+        }
+
+        .mesh__blob--2 {
+          width: min(500px, 70vw);
+          height: min(500px, 70vw);
+          background: oklch(0.35 0.14 200);
+          bottom: -10%;
+          right: -10%;
+          opacity: 0.14;
+          animation: mesh-drift-2 30s infinite alternate ease-in-out;
+        }
+
+        .mesh__blob--3 {
+          width: min(400px, 60vw);
+          height: min(400px, 60vw);
+          background: oklch(0.42 0.12 50);
+          top: 45%;
+          left: 55%;
+          opacity: 0.07;
+          animation: mesh-drift-3 22s infinite alternate ease-in-out;
+        }
+
+        /* ── Main content ── */
         .landing-main {
           flex: 1;
           display: flex;
@@ -89,79 +119,113 @@ export default async function LandingPage() {
           padding: 48px 24px 64px;
           position: relative;
           z-index: 1;
-          gap: 48px;
+          gap: 40px;
         }
 
-        .landing-wordmark {
+        /* ── Brand area ── */
+        .landing-brand {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .monogram {
           display: flex;
           align-items: center;
-          gap: 10px;
+          justify-content: center;
+          width: 72px;
+          height: 72px;
+          border-radius: 18px;
+          background: oklch(0.62 0.19 285 / 0.1);
+          animation: glow-pulse 4s infinite ease-in-out;
         }
 
-        .wordmark-text {
-          font-size: 1.125rem;
+        .monogram span {
+          font-size: 2rem;
           font-weight: 700;
-          color: var(--ink-muted);
-          letter-spacing: -0.01em;
+          color: oklch(0.75 0.16 285);
+          line-height: 1;
         }
 
-        .hero {
+        .brand-name {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: oklch(0.92 0.005 280);
+          letter-spacing: -0.02em;
+        }
+
+        /* ── Hero ── */
+        .landing-hero {
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
-          gap: 20px;
-          max-width: 600px;
-          animation: fade-up 300ms ease-out both;
+          gap: 24px;
+          max-width: 420px;
         }
 
-        .hero-heading {
-          font-size: clamp(2rem, 5vw, 3.5rem);
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          line-height: 1.15;
-          color: var(--ink);
-          text-wrap: balance;
-        }
-
-        .hero-accent {
-          color: var(--primary);
-        }
-
-        .hero-body {
-          font-size: 1.0625rem;
-          color: var(--ink-muted);
-          line-height: 1.65;
-          max-width: 52ch;
+        .tagline {
+          font-size: 1.125rem;
+          color: oklch(0.60 0.01 280);
+          line-height: 1.5;
+          max-width: 36ch;
           text-align: center;
-          text-wrap: pretty;
         }
 
-        .hero-cta {
-          margin-top: 8px;
-          animation: fade-up 300ms ease-out 80ms both;
+        .landing-cta {
+          margin-top: 4px;
         }
 
-        .hero-note {
+        .privacy-note {
           font-size: 0.8125rem;
-          color: var(--ink-faint);
+          color: oklch(0.40 0.01 280);
           text-align: center;
           max-width: none;
         }
 
+        /* ── Footer ── */
         .landing-footer {
           text-align: center;
-          padding: 24px;
-          font-size: 0.75rem;
-          color: var(--ink-faint);
+          padding: 32px 24px;
+          font-size: 0.6875rem;
+          font-weight: 600;
+          color: oklch(0.30 0.01 280);
           position: relative;
           z-index: 1;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
         }
 
+        /* ── Reduced motion ── */
         @media (prefers-reduced-motion: reduce) {
-          .hero,
-          .hero-cta {
+          .mesh__blob {
+            animation: none !important;
+          }
+          .monogram {
+            animation: none !important;
+            box-shadow: 0 0 0 1px oklch(0.62 0.19 285 / 0.25);
+          }
+          .landing-hero,
+          .landing-brand {
             animation: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .monogram {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+          }
+          .monogram span {
+            font-size: 1.75rem;
+          }
+          .brand-name {
+            font-size: 1.25rem;
+          }
+          .tagline {
+            font-size: 1rem;
           }
         }
       `}</style>

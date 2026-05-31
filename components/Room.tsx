@@ -32,49 +32,67 @@ export function Room({ room, apps }: RoomProps) {
   return (
     <section
       aria-labelledby={`room-${room.id}`}
-      style={{
-        background: `var(--tint-${room.id})`,
-        borderRadius: "16px",
-        padding: "28px 24px",
-      }}
+      className="room-section"
     >
-      {/* Room label */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          marginBottom: "20px",
-        }}
-      >
+      {/* Room label header */}
+      <div className="room-header">
         {RoomIcon && (
-          <RoomIcon style={{ color: "var(--ink-muted)", flexShrink: 0 }} />
+          <RoomIcon className="room-header__icon" style={{ width: 16, height: 16 }} />
         )}
-        <h2
-          id={`room-${room.id}`}
-          style={{
-            fontSize: "1rem",
-            fontWeight: 600,
-            color: "var(--ink-muted)",
-            letterSpacing: "0.01em",
-          }}
-        >
+        <h2 id={`room-${room.id}`} className="room-header__title">
           {room.label}
         </h2>
       </div>
 
-      {/* Tile grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "12px",
-        }}
-      >
+      {/* Grid of launchpad icons */}
+      <div className="room-grid">
         {apps.map((app, i) => (
           <AppTile key={app.id} app={app} index={i} />
         ))}
       </div>
+
+      <style>{`
+        .room-section {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .room-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding-left: 2px;
+        }
+
+        .room-header__icon {
+          color: var(--ink-muted);
+          opacity: 0.6;
+          flex-shrink: 0;
+        }
+
+        .room-header__title {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: oklch(0.50 0.01 280);
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        .room-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+          .room-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+      `}</style>
     </section>
   );
 }
